@@ -1,0 +1,47 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/http": "^0.6.4",
+    "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/proxy": "^2.1.0",
+    "@pinia/nuxt": "^0.5.1",
+    "@radix-icons/vue": "^1.0.0",
+    "@square/web-sdk": "^2.0.1",
+    "bcrypt": "^5.1.1",
+    "composition-api": "^0.0.0",
+    "cookie-universal-nuxt": "^2.2.2",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
+    "cryptojs": "^2.5.3",
+    "express": "^4.19.2",
+    "google-auth-library": "^9.11.0",
+    "nuxt": "^3.10.3",
+    "nuxt-svgo": "^4.0.1",
+    "nuxt-vue3-google-signin": "^0.0.11",
+    "pinia": "^2.1.7",
+    "primevue": "^3.53.0",
+    "react": "^18.3.1",
+    "uuid": "^10.0.0",
+    "vue": "^3.4.21",
+    "vue-headful": "^2.1.0",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@nuxt/fonts": "^0.1.0",
+    "@nuxtjs/apollo": "^5.0.0-alpha.14",
+    "@nuxtjs/auth-next": "^5.0.0-1667386184.dfbbb54",
+    "@nuxtjs/svg": "^0.0.0",
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "nuxt-bootstrap-icons": "^1.1.7",
+    "nuxt-file-storage": "^0.2.6"
+  }
+}

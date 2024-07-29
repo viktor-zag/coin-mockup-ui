@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  body {
+    @apply bg-[#E6E6E6] text-gray-200;
+  }
+  figure {
+    border: thin #c0c0c0 solid;
+    display: inline-flex;
+    flex-flow: column;
+    padding: 5px;
+    max-width: 200px;
+    margin: auto;
+  }
+  .DragButton {
+    background-color: #000000; /* Green */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+}
