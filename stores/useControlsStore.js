@@ -9,6 +9,7 @@ export const useControlsStore = defineStore("controls", () => {
   const savedData = ref([]);
   const userEmail = ref("");
   const gridState = ref(true);
+  const userRealName = ref("");
   const createGroup = () => {
     let rando = randomId();
     objectValue.value.push({
@@ -444,6 +445,11 @@ const createImage = (img, width, height) => {
           label:"textDecoration",
           value:[0, 0, 0, 0],
           type:"array"
+        },
+        {
+          label:"boundRect",
+          value:{},
+          type:"object"
         }
       ],
       state: {

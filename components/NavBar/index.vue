@@ -5,20 +5,8 @@
     <h1 class="text-3xl font-bold">
       Coin<span class="text-green-400">Mark</span>
     </h1>
-    <button
-      v-if="!isLoggedIn"
-      class="font-bold hover:text-green-400 font-[Gambetta]"
-      @click="loginWithGoogle"
-    >
-      LogIn with Google
-    </button>
+
     <div class="flex space-x-4">
-      <button
-        v-if="isLoggedIn === true"
-        class="font-bold hover:text-green-400 font-[Gambetta]"
-      >
-        {{ userEmail }}
-      </button>
       <button
         class="font-bold hover:text-green-400 font-[Gambetta]"
         @click="handleHomePage"
@@ -26,19 +14,47 @@
         MainPage
       </button>
       <button
-        v-if="isLoggedIn"
+        v-if="!isLoggedIn"
         class="font-bold hover:text-green-400 font-[Gambetta]"
-        @click="handleMyOrder"
+        @click="loginWithGoogle"
       >
-        My order
+        LogIn with Google
       </button>
-      <button
-        v-if="isLoggedIn"
-        class="font-bold hover:text-green-400 font-[Gambetta]"
-        @click="logOut"
-      >
-        LogOut
-      </button>
+      <DropdownMenuRoot v-model:open="toggleState" v-if="isLoggedIn">
+        <DropdownMenuTrigger aria-label="Customise options">
+          <AvatarRoot
+            class="bg-pink-700 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle"
+          >
+            <AvatarFallback
+              class="text-grass11 leading-1 flex h-full w-full items-center justify-center bg-pink-700 text-[15px] font-medium"
+            >
+              {{ userRealName[0] }}
+            </AvatarFallback>
+          </AvatarRoot>
+        </DropdownMenuTrigger>
+        <DropdownMenuPortal>
+          <DropdownMenuContent
+            class="min-w-[220px] outline-none bg-white rounded-md p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade"
+            :side-offset="5"
+          >
+            <DropdownMenuItem
+              value="New Tab"
+              class="group text-[16px] leading-none text-black rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-black data-[disabled]:pointer-events-none data-[highlighted]:bg-green9 data-[highlighted]:text-green1"
+              @click="handleMyOrder"
+            >
+              <button>My Order</button>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator class="h-[1px] bg-gray-400 m-[5px]" />
+            <DropdownMenuItem
+              value="New Tab"
+              class="group text-[16px] leading-none text-black rounded-[3px] flex items-center h-[25px] px-[5px] relative pl-[25px] select-none outline-none data-[disabled]:text-black data-[disabled]:pointer-events-none data-[highlighted]:bg-green9 data-[highlighted]:text-green1"
+              @click="logOut"
+            >
+              <button>Log Out</button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenuPortal>
+      </DropdownMenuRoot>
     </div>
   </nav>
 </template>
@@ -50,10 +66,31 @@ import {
   clientSecret,
   redirectURI,
 } from "../../components/config/ngrok";
+import {
+  AvatarFallback,
+  AvatarImage,
+  AvatarRoot,
+  DropdownMenuArrow,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuItemIndicator,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuRoot,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "radix-vue";
 const control = useControlsStore();
 const googleClientId = clientId; // Replace with your actual Google Client ID
 const redirectUri = redirectURI;
 const router = useRouter();
+const userRealName = ref("");
 const responseType = "code";
 const isLoggedIn = ref(false);
 const userEmail = ref("");
@@ -85,6 +122,8 @@ onMounted(async () => {
         isLoggedIn.value = true;
       }
       userEmail.value = res.email;
+      localStorage.setItem("name", res.name);
+      userRealName.value = localStorage.getItem("name");
       localStorage.setItem("userEmail", res.email);
     });
 });
@@ -144,6 +183,12 @@ const logOut = async () => {
   });
   if (delresponse.ok) {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("code");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("expiresIn");
+    localStorage.removeItem("name");
+    isLoggedIn.value = false;
     console.log("Access token revoked successfully");
   } else {
     console.error("Failed to revoke access token:", response.status);

@@ -74,44 +74,69 @@ function NavigateParams(id, params) {
 
 <template>
   <div class="w-[350px] flex bg-slate-950">
-    <div class="w-[70px] bg-slate-800">
-      <button class="text-[12px] h-[70px]" @click="selectTemplate">
+    <div class="w-[55px] bg-slate-800">
+      <button
+        class="text-[12px] h-[70px] align-center items-center"
+        @click="selectTemplate"
+      >
+        <img
+          src="../assets/images/template.png"
+          style="background-color: white; width: 50px"
+        />
         Templates
       </button>
       <button class="text-[12px] h-[70px]" @click="selectElements">
+        <img
+          src="../assets/images/element-plus.svg"
+          style="background-color: white; width: 50px"
+        />
         Elements
       </button>
-      <button class="text-[12px] h-[70px]" @click="selectLayers">Layers</button>
+      <button class="text-[12px] h-[70px]" @click="selectLayers">
+        <img
+          src="../assets/images/layers.svg"
+          style="background-color: white; width: 50px"
+        />Layers
+      </button>
       <br />
-      <button class="text-[12px] h-[70px]" @click="selectSaves">Loads</button>
+      <button class="text-[12px] h-[70px]" @click="selectSaves">
+        <img
+          src="../assets/images/load.png"
+          style="background-color: white; width: 50px"
+        />Loads
+      </button>
     </div>
     <hr />
     <div
       v-if="tabState === 0"
-      class="px-3"
+      class="px-5 py-3 flex"
       style="user-select: none"
       draggable="false"
     >
       <span>
         <button
           @click="handleCreateSvg(indexTemplate.url)"
-          class="bg-white"
+          class="bg-slate-600 w-full mr-7 mb-3 h-10 rounded-md"
           v-for="indexTemplate in svgTemplates.value"
           :key="indexTemplate"
-          style="user-select: none"
           draggable="false"
         >
-          <img
+          <!-- <img
             v-bind:src="`http://localhost:1337${indexTemplate.url}`"
             draggable="false"
-            :style="{ width: '100px', height: '100px', userSelect: 'none' }"
-          />
-          <!-- {{ indexTemplate.title }} -->
+            :style="{
+              width: '100px',
+              height: '150px',
+              userSelect: 'none',
+              backgroundColor: '#a5a5a5',
+            }"
+          /> -->
+          {{ indexTemplate.title }}
         </button>
         <br v-if="index % 2 === 1" />
       </span>
     </div>
-    <div v-if="tabState === 1">
+    <div v-if="tabState === 1" class="space-x-2 flex px-5 py-3">
       <button
         @click="control.createCircle"
         class="border rounded bg-gray-900 h-[40px] w-[40px]"
@@ -154,7 +179,7 @@ function NavigateParams(id, params) {
         >
           <button
             @click="NavigateParams(tempData.id, tempData.attributes)"
-            class="w-[280px]"
+            class="w-[295px]"
           >
             {{ tempData.attributes.name }}
           </button>
@@ -170,16 +195,15 @@ function NavigateParams(id, params) {
         <li
           v-for="tempObject in objectValue.objectValue.slice().reverse()"
           :key="tempObject"
-          class="bg-gray-300 w-[280px] border-b-[1px] border-b-gray-700 h-[50px] pl-1 items-center flex"
+          class="bg-gray-300 w-[295px] border-b-[1px] border-b-gray-700 h-[50px] pl-1 items-center flex"
         >
           <svg
-            v-if="tempObject.type === 'svg'"
-            x="0"
-            y="0"
+            v-if="tempObject.type === 'piece'"
+            :x="`${tempObject.control[0].value}`"
+            :y="`${tempObject.control[1].value}`"
             width="40"
             height="40"
-            transform="scale(1)"
-            v-html="`${tempObject.control[8].value}`"
+            v-html="`${tempObject.control[5].value}`"
           ></svg>
 
           <svg width="40" height="40" v-if="tempObject.type === 'rect'">

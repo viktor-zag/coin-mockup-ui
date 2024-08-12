@@ -5,6 +5,7 @@ export default defineComponent(
       processing: <div>...</div>,
       done: <div>...</div>,
     });
+    const boundRect = ref({});
     const objectValue = useControlsStore();
     let ungroupedSVG,
       ungroupedSVG1 = [];
@@ -20,6 +21,8 @@ export default defineComponent(
           `svgElement${props.model.id}`
         );
         const rect = svgElement.getBoundingClientRect();
+        boundRect.value = rect;
+
         props.model.control[2].value =
           rect.width /
           props.model.control[8].value /
@@ -219,6 +222,23 @@ export default defineComponent(
                     props.model.control[8].value * props.model.control[10].value
                   })`}
               >
+                <rect
+                  x={
+                    props.model.control[0].value /
+                      props.model.control[8].value /
+                      props.model.control[9].value +
+                    props.model.control[6].value
+                  }
+                  y={
+                    props.model.control[1].value /
+                      props.model.control[8].value /
+                      props.model.control[10].value +
+                    props.model.control[7].value
+                  }
+                  width={Math.abs(props.model.control[2].value)}
+                  height={Math.abs(props.model.control[3].value)}
+                  fill="#00000000"
+                />
                 <svg
                   id={`svgElement${props.model.id}`}
                   viewBox="0 0 1500 1500"
@@ -384,6 +404,12 @@ export default defineComponent(
           )}
           {props.model.type === "pen" && (
             <g
+              onClick={(e) => {
+                return clickMe(props.model.type, props.model.id, e);
+              }}
+              onMousedown={(e) => {
+                return downMe(props.model.type, props.model.id, e);
+              }}
               transform={`translate(${
                 (-(
                   props.model.control[2].value + props.model.control[1].value
@@ -404,13 +430,24 @@ export default defineComponent(
                 props.model.control[5].value * props.model.control[7].value
               })`}
             >
+              <rect
+                x={Math.min(
+                  props.model.control[1].value,
+                  props.model.control[2].value
+                )}
+                y={Math.min(
+                  props.model.control[3].value,
+                  props.model.control[4].value
+                )}
+                width={Math.abs(
+                  props.model.control[2].value - props.model.control[1].value
+                )}
+                height={Math.abs(
+                  props.model.control[4].value - props.model.control[3].value
+                )}
+                fill="#00000000"
+              />
               <path
-                onClick={(e) => {
-                  return clickMe(props.model.type, props.model.id, e);
-                }}
-                onMousedown={(e) => {
-                  return downMe(props.model.type, props.model.id, e);
-                }}
                 d={`M${props.model.control[0].value.flat().join(" ")}`}
                 style={`fill: none; stroke: green; stroke-width: ${props.model.control[9].value}`}
                 class={`${
@@ -1115,6 +1152,12 @@ export default defineComponent(
           {props.model.type === "text" &&
             (textTemp.value === 0 ? (
               <g
+                onClick={(e) => {
+                  return clickMe(props.model.type, props.model.id, e);
+                }}
+                onMousedown={(e) => {
+                  return downMe(props.model.type, props.model.id, e);
+                }}
                 x={props.model.control[0].value}
                 y={props.model.control[1].value}
                 transform={`translate(${
@@ -1131,17 +1174,24 @@ export default defineComponent(
                   props.model.control[4].value * props.model.control[7].value
                 })`}
               >
+                <rect
+                  x={props.model.control[0].value}
+                  y={props.model.control[1].value - 30}
+                  width={
+                    (props.model.control[2].value.length *
+                      props.model.control[5].value *
+                      props.model.control[9].value) /
+                    80
+                  }
+                  height={(props.model.control[9].value / 80) * 64}
+                  fill="#00000000"
+                />
                 <text
+                  id={`text${props.model.id}`}
                   x={props.model.control[0].value}
                   y={props.model.control[1].value}
                   onDblclick={() => {
                     textTemp.value = 1;
-                  }}
-                  onClick={(e) => {
-                    return clickMe(props.model.type, props.model.id, e);
-                  }}
-                  onMousedown={(e) => {
-                    return downMe(props.model.type, props.model.id, e);
                   }}
                   textLength={
                     (props.model.control[2].value.length *

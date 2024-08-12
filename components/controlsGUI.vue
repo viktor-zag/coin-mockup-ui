@@ -8,6 +8,24 @@ const controlsProps = defineProps({
   controls: Object,
   settings: Object,
 });
+import {
+  ComboboxAnchor,
+  ComboboxArrow,
+  ComboboxCancel,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxItemIndicator,
+  ComboboxLabel,
+  ComboboxPortal,
+  ComboboxRoot,
+  ComboboxSeparator,
+  ComboboxTrigger,
+  ComboboxViewport,
+} from "radix-vue";
+const v = ref("");
 import { v4 as uuidv4 } from "uuid";
 import { fontFamily } from "./config/fontFamily.js";
 
@@ -695,9 +713,9 @@ function handleFontChange(e) {
     selection.multiObjects.length === 1 &&
     selection.multiObjects[0].type === "text"
   ) {
-    selection.multiObjects[0].control[10].value = e.target.value;
+    selection.multiObjects[0].control[10].value = e;
   } else {
-    selection.objectSelected.control[10].value = e.target.value;
+    selection.objectSelected.control[10].value = e;
   }
 }
 function handleSpacingChange(e) {
@@ -869,7 +887,7 @@ function handleCloseModal() {
   appearance: none;
   width: 25px;
   height: 25px;
-  background: #04aa6d;
+  background: #9ba3d1;
   cursor: pointer;
 }
 
@@ -890,63 +908,84 @@ function handleCloseModal() {
     class="border border-gray-700 w-[350px] justify-between pt-2 px-3 bg-gray-900"
     :style="{ height: 'calc(100vh - 70px)' }"
   >
-    <div class="flex space-x-2 pb-4">
-      <button
-        @click="flipXObject"
-        class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
-      >
-        <img src="../assets/images/flip-horizon.png" width="40" height="40" />
-      </button>
-      <button
-        @click="flipYObject"
-        class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
-      >
-        <img src="../assets/images/flip-vertical.png" width="40" height="40" />
-      </button>
-      <button
-        @click="handleGrid"
-        class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
-      >
-        <img src="../assets/images/grid.png" width="40" height="40" />
-      </button>
-      <button
-        @click="handleCenter"
-        class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
-      >
-        <img src="../assets/images/center.png" width="40" height="40" />
-      </button>
-      <button
-        @click="handleCopy"
-        class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
-      >
-        <img src="../assets/images/copy.png" width="40" height="40" />
-      </button>
-      <button
-        @click="handlePaste"
-        class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
-      >
-        <img src="../assets/images/paste.png" width="35" height="35" />
-      </button>
-      <button
-        @click="handleLayDown"
-        class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
-      >
-        <img src="../assets/images/laydown.png" width="35" height="35" />
-      </button>
-      <button
-        @click="handleLayUp"
-        class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
-      >
-        <img src="../assets/images/layup.png" width="35" height="35" />
-      </button>
-      <button
-        @click="shortKey"
-        class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
-      >
-        <img src="../assets/images/keyboard.png" width="35" height="35" />
-      </button>
+    <div class="px-5">
+      <div class="flex space-x-2 pb-4">
+        <button
+          @click="flipXObject"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img src="../assets/images/flip-horizon.png" width="40" height="40" />
+        </button>
+        <button
+          @click="flipYObject"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img
+            src="../assets/images/flip-vertical.png"
+            width="40"
+            height="40"
+          />
+        </button>
+        <button
+          @click="handleGrid"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img src="../assets/images/grid.png" width="40" height="40" />
+        </button>
+        <button
+          @click="handleCenter"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img src="../assets/images/center.png" width="40" height="40" />
+        </button>
+        <button
+          @click="shortKey"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img src="../assets/images/keyboard.png" width="35" height="35" />
+        </button>
+      </div>
+      <div class="flex space-x-2 pb-4">
+        <button
+          @click="handleCopy"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img src="../assets/images/copy.png" width="40" height="40" />
+        </button>
+        <button
+          @click="handlePaste"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img src="../assets/images/paste.png" width="35" height="35" />
+        </button>
+        <button
+          @click="handleLayDown"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img src="../assets/images/laydown.png" width="35" height="35" />
+        </button>
+        <button
+          @click="handleLayUp"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img src="../assets/images/layup.png" width="35" height="35" />
+        </button>
+        <button
+          @click="handleSave"
+          class="bg-slate-400 w-[50px] h-[50px] rounded-md border-white border-solid border-2 flex items-center justify-center"
+        >
+          <img src="../assets/images/save.png" width="35" height="35" />
+        </button>
+      </div>
     </div>
+    <button
+      class="inline-flex items-center justify-center rounded px-[15px] text-[15px] leading-none font-medium h-[35px] bg-green-200 text-green-900 hover:bg-green5 focus:shadow-[0_0_0_2px] focus:shadow-green7 outline-none cursor-default"
+      onclick="document.getElementById('selectedFile').click();"
+    >
+      Upload
+    </button>
     <div>
+      <br />
       <div
         v-if="
           (selection.guiControl.type === 'text' &&
@@ -955,25 +994,51 @@ function handleCloseModal() {
           (selection.multiObjects.length === 1 &&
             selection.multiObjects[0].type === 'text')
         "
-        class="space-y-2"
+        class="space-y-2 bg-slate-700 px-3 py-5 rounded-md"
       >
-        <select
-          v-model="focused_font"
-          v-bind:style="{ fontFamily: font, color: '#000000' }"
-          v-on:change="handleFontChange"
-        >
-          <option value="" disabled selected>Font</option>
-          <option
-            v-for="font in fontFamily"
-            v-bind:value="font"
-            v-bind:style="{ fontFamily: font, color: '#000000' }"
-            :key="font"
-          >
-            {{ font }}
-          </option>
-        </select>
         <div class="flex">
-          spacing
+          <span class="w-[120px]">FontFamily</span>
+          <ComboboxRoot
+            v-model="v"
+            class="relative"
+            @update:model-value="handleFontChange"
+          >
+            <ComboboxAnchor
+              class="min-w-[160px] inline-flex items-center justify-between rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-black shadow-[0_2px_10px] shadow-black/10 hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-grass9 outline-none"
+            >
+              <ComboboxInput
+                class="!bg-transparent outline-none text-grass11 h-full selection:bg-grass5 placeholder-slate-400"
+                placeholder="Placeholder..."
+              />
+              <ComboboxTrigger> &nabla; </ComboboxTrigger>
+            </ComboboxAnchor>
+
+            <ComboboxContent
+              class="absolute z-10 mt-2 max-w-[400px] h-[600px] overflow-auto bg-slate-800 text-white overflow-hidden rounded"
+            >
+              <ComboboxViewport nonce class="p-[5px]">
+                <ComboboxEmpty
+                  class="text-mauve8 text-xs font-medium text-center py-2"
+                />
+
+                <ComboboxItem
+                  v-for="(font, index) in fontFamily"
+                  :key="index"
+                  class="text-[13px] leading-none text-white rounded-[3px] flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none"
+                  :value="font"
+                  v-bind:style="{ fontFamily: font }"
+                >
+                  <span>
+                    {{ font }}
+                  </span>
+                </ComboboxItem>
+                <ComboboxSeparator class="h-[1px] bg-grass6 m-[5px]" />
+              </ComboboxViewport>
+            </ComboboxContent>
+          </ComboboxRoot>
+        </div>
+        <div class="flex">
+          <span class="w-[120px]">spacing</span>
           <input
             type="range"
             min="30"
@@ -986,7 +1051,7 @@ function handleCloseModal() {
           />
         </div>
         <div class="flex">
-          lineheight
+          <span class="w-[120px]">LineHeight</span>
           <input
             type="range"
             min="30"
@@ -998,7 +1063,7 @@ function handleCloseModal() {
           />
         </div>
         <div class="flex">
-          textsize
+          <span class="w-[120px]">TextSize</span>
           <input
             type="range"
             min="12"
@@ -1011,7 +1076,20 @@ function handleCloseModal() {
           />
         </div>
         <div class="flex">
-          textAlignment&nbsp;&nbsp;&nbsp;
+          <span class="w-[120px]">strokeWidth</span>
+          <input
+            type="range"
+            min="0"
+            max="10"
+            step="1"
+            value="0"
+            class="slider"
+            id="myRange"
+            @input="handleStokeWidth"
+          />
+        </div>
+        <div class="flex space-x-3">
+          Alignment&nbsp;&nbsp;&nbsp;
           <input type="radio" id="age1" name="age" value="30" />
           <label for="age1">left</label><br />
           <input type="radio" id="age2" name="age" value="60" />
@@ -1019,8 +1097,8 @@ function handleCloseModal() {
           <input type="radio" id="age3" name="age" value="100" />
           <label for="age3">right</label>
         </div>
-        <div class="flex">
-          textDecoration&nbsp;&nbsp;&nbsp;
+        <div class="flex space-x-2">
+          Decoration&nbsp;&nbsp;&nbsp;
           <input
             type="checkbox"
             name="underline"
@@ -1031,8 +1109,8 @@ function handleCloseModal() {
           <input type="checkbox" name="underline" @change="handleLinethrough" />
           <label for="underline">line-through</label>
         </div>
-        <div class="flex">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="flex space-x-2">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <input
             type="checkbox"
             name="underline"
@@ -1053,19 +1131,7 @@ function handleCloseModal() {
             class="border-none rounded bg-stone-500 w-14 h-8 pl-2 pr-2"
           />
         </div>
-        <div class="flex">
-          stokeWidth
-          <input
-            type="range"
-            min="0"
-            max="10"
-            step="1"
-            value="0"
-            class="slider"
-            id="myRange"
-            @input="handleStokeWidth"
-          />
-        </div>
+
         <div class="flex justify-between">
           <label for="background">StokeColor</label>
           <input
@@ -1104,54 +1170,16 @@ function handleCloseModal() {
           >
         </div>
       </div>
-      <div
-        v-if="
-          selection.guiControl.type === 'circle' &&
-          selection.objectSelected.state.isActive === true
-        "
-      >
-        <p>Circle control</p>
-        <GUIInterfaceCircle />
-      </div>
-      <div
-        v-else-if="
-          selection.guiControl.type === 'rect' &&
-          selection.objectSelected.state.isActive === true
-        "
-      >
-        <p>Rectangle control</p>
-        <GUIInterfaceRectangle />
-      </div>
     </div>
-    <div class="flex flex-col mt-10 justify-self-end">
-      <p>Settings</p>
+    <div class="flex flex-col mt-10 px-5 justify-self-end">
       <div class="space-y-2">
-        <div class="flex justify-between">
-          <label for="cx">Steps</label>
-          <input
-            v-model="settings.steps"
-            @change="settings.setSteps"
-            type="number"
-            name="cx"
-            @click="updateControls"
-            class="border-none rounded-md bg-stone-500 w-14 h-8 pl-4"
-          />
-        </div>
-        <div class="flex justify-between">
-          <label for="background">background</label>
-          <input
-            v-model="settings.svgBackground"
-            type="color"
-            id="background"
-            name="background"
-            class="border-none rounded bg-stone-500 w-14 h-8 pl-2 pr-2"
-          />
-        </div>
         <div>
-          <input type="file" @change="handleUploadImage" />
-        </div>
-        <div>
-          <button @click="handleSave">save</button>
+          <input
+            type="file"
+            id="selectedFile"
+            style="display: none"
+            @change="handleUploadImage"
+          />
         </div>
       </div>
     </div>
